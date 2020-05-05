@@ -1,6 +1,6 @@
 ## Project: Data Modeling with Postgres
 
-![](diagram.png)
+![db_diagram](diagram.png)
 
 
 ## Introduction
