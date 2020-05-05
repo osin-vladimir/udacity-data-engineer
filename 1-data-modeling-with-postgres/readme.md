@@ -49,5 +49,6 @@ SELECT songs.title, songs.duration FROM songs ORDER BY songs.duration DESC LIMIT
 
 - Top 10 most popular songs: 
 ```sql
-SELECT songs.title, COUNT(songs.title) FROM (songplays JOIN songs ON songplays.song_id=songs.song_id) GROUP BY songs.title
+SELECT songs.title, COUNT(songs.title) FROM (songplays JOIN songs ON songplays.song_id=songs.song_id) 
+GROUP BY songs.title
 ```
