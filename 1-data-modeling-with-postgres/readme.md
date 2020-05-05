@@ -13,6 +13,16 @@ Fact and dimensional tables were defined in a star schema and focused on analysi
 
 ### Project structure
 
+    .
+    ├── build                   # Compiled files (alternatively `dist`)
+    ├── docs                    # Documentation files (alternatively `doc`)
+    ├── src                     # Source files (alternatively `lib` or `app`)
+    ├── test                    # Automated tests (alternatively `spec` or `tests`)
+    ├── tools                   # Tools and utilities
+    ├── LICENSE
+    └── README.md
+
+.
 1-modeling-with-postgres/
 ├── create_tables.py  - creates tables predifined in sql_queries.py
 ├── etl.ipynb -  notebook that showcase ETL steps for each table
