@@ -1,5 +1,8 @@
 ## Project: Data Modeling with Postgres
 
+![](diagram.png)
+
+
 ## Introduction
 A startup called Sparkify wants to analyze the data they've been collecting on songs and user activity on their new music streaming app. The analytics team is particularly interested in understanding what songs users are listening to. Unfortunately, they don't have an easy way to query data for their analytics needs. 
 
@@ -12,24 +15,14 @@ As a data engineer, you have to design a Postgres database for storing fact and 
 Fact and dimensional tables were defined in a star schema and focused on analysing played songs, which is the core focus of the analytics team in Sparkify. Start schema is perfectly suited for this purposes since it's allowing to construct efficient queries with small amount of joins. ETL pipeline designed using **pandas** library, that allows to read data from JSON and perform necessary filtering and adjustments prior to writing into the database, and **psycopg2** library which was used for creating database tables in Postgres.   
 
 ### Project structure
-
-    .
-    ├── build                   # Compiled files (alternatively `dist`)
-    ├── docs                    # Documentation files (alternatively `doc`)
-    ├── src                     # Source files (alternatively `lib` or `app`)
-    ├── test                    # Automated tests (alternatively `spec` or `tests`)
-    ├── tools                   # Tools and utilities
-    ├── LICENSE
-    └── README.md
-
-.
-1-modeling-with-postgres/
-├── create_tables.py  - creates tables predifined in sql_queries.py
-├── etl.ipynb -  notebook that showcase ETL steps for each table
-├── etl.py -  general ETL script that using  whole dataset
-├── output_file.zip - zipped  dataset
-├── sql_queries.py - create, drop, insert, select queries for defined tables
-└── test.ipynb -  notebook that testing query results of etl.ipynb
+    
+    1-modeling-with-postgres/
+    ├── create_tables.py         # creates tables predifined in sql_queries.py
+    ├── etl.ipynb                # notebook that showcase ETL steps for each table
+    ├── etl.py                   # general ETL script that using  whole dataset
+    ├── output_file.zip          # zipped  dataset
+    ├── sql_queries.py           # create, drop, insert, select queries for defined tables
+    └── test.ipynb               # notebook that testing query results of etl.ipynb
 
 To represent results you should run scripts in the following order:
 1. Create posgres tables using:
