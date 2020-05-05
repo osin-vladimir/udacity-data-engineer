@@ -11,6 +11,27 @@ As a data engineer, you have to design a Postgres database for storing fact and 
 ## Project implementation
 Fact and dimensional tables were defined in a star schema and focused on analysing played songs, which is the core focus of the analytics team in Sparkify. Start schema is perfectly suited for this purposes since it's allowing to construct efficient queries with small amount of joins. ETL pipeline designed using **pandas** library, that allows to read data from JSON and perform necessary filtering and adjustments prior to writing into the database, and **psycopg2** library which was used for creating database tables in Postgres.   
 
+### Project structure
+
+1-modeling-with-postgres/
+├── create_tables.py  - creates tables predifined in sql_queries.py
+├── etl.ipynb -  notebook that showcase ETL steps for each table
+├── etl.py -  general ETL script that using  whole dataset
+├── output_file.zip - zipped  dataset
+├── sql_queries.py - create, drop, insert, select queries for defined tables
+└── test.ipynb -  notebook that testing query results of etl.ipynb
+
+To represent results you should run scripts in the following order:
+1. Create posgres tables using:
+    ```
+    python create_tables.py
+    ```
+2. Execute ETL pipeline using:
+    ```
+    python etl.py
+    ```
+**Note:** don't forget to extract data from the zip archive. 
+
 ### Query examples
 
 - Number of male users: 
