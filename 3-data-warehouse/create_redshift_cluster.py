@@ -12,6 +12,8 @@ if __name__ == "__main__":
     parser.add_argument("--dwh_db_password", default="Passw0rd", type=str)
     parser.add_argument("--dhw_port", default=5439, type=int)
     parser.add_argument("--dwh_nodes", default=4, type=int)
+    parser.add_argument("--dwh_s3_iam_name", default="redshift_s3_read_only")
+
     args = parser.parse_args()
 
     # create new boto3 session with profile credentials
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     iam.attach_role_policy(RoleName="redshift_s3_read_only",
                            PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess")
     # get role arn
-    role_arn = iam.get_role(RoleName="redshift_s3_read_only")['Role']['Arn']
+    role_arn = iam.get_role(RoleName=args.dwh_s3_iam_name)['Role']['Arn']
 
     # creating redshift cluster
     redshift = boto3.client("redshift")
@@ -66,4 +68,5 @@ if __name__ == "__main__":
         )
     except redshift.exceptions.ClusterAlreadyExistsFault:
         print("Cluster already already exist")
+
 

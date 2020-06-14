@@ -19,25 +19,35 @@ tables on Redshift and execute SQL statements that create the analytics tables f
 ### Project structure
     
     3-data-warehouse/
-    ├── create_tables.py          # creates tables predifined in sql_queries.py
-    ├── crate_redshift_cluster.py # creates redshift cluster with access to S3
-    ├── etl.py                    # general ETL script that using  whole dataset
-    ├── sql_queries.py            # create, drop, insert, select queries for defined tables
-    └── test.ipynb                # notebook that testing query results of etl.ipynb
+    ├── create_tables.py            # creates tables predifined in sql_queries.py
+    ├── create_redshift_cluster.py  # creates redshift cluster with access to S3
+    ├── add_security_group.py       # add security group to default VPC in order to access Rdshift cluster 
+    ├── delete_redshift_cluster.py  # deletes redshift cluster and roles
+    ├── etl.py                      # general ETL script that using  whole dataset
+    ├── dwh.cfg                     # your Redshift cluster credentials, policies 
+    └── sql_queries.py              # create, drop, insert, select queries for defined tables
 
-To represent results you should run scripts in the following order:
+Follow the instruction below:
 
 1. Create a [cluster security group](https://docs.aws.amazon.com/redshift/latest/mgmt/manage-security-group-api-cli.html) 
 in your VPC, that allow you to access your AWS Redshift cluster. 
 
 2. Create Redshift cluster using command below:
+
+    **Note 1**: keep in mind that your Redshift cluster should be in the same region as S3 buckets.
+
     ```
     python create_redshift_cluster.py --aws-profile <put your AWS profile here>
-    ```
+    ```   
    
-   **Note**: keep in mind that your Redshift cluster should be in the same region as S3 buckets. 
+    ```
+    python add_security_group.py --aws-profile <put your AWS profile here>
+    ```   
    
 3. Create required tables: 
+
+    **Note 2**: make sure that *dwh.cfg* is populated with credentials to your Redshift cluster and required policies.
+
     ```
     python create_tables.py
     ```
