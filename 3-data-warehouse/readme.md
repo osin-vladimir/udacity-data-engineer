@@ -29,10 +29,7 @@ tables on Redshift and execute SQL statements that create the analytics tables f
 
 Follow the instruction below:
 
-1. Create a [cluster security group](https://docs.aws.amazon.com/redshift/latest/mgmt/manage-security-group-api-cli.html) 
-in your VPC, that allow you to access your AWS Redshift cluster. 
-
-2. Create Redshift cluster using command below:
+1. Create Redshift cluster using command below:
 
     **Note 1**: keep in mind that your Redshift cluster should be in the same region as S3 buckets.
 
