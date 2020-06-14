@@ -25,7 +25,7 @@ Fact and dimensional tables were defined in a star schema and focused on analysi
     └── test.ipynb               # notebook that testing query results of etl.ipynb
 
 To represent results you should run scripts in the following order:
-1. Create posgres tables using:
+1. Create postgres tables using:
     ```
     python create_tables.py
     ```
