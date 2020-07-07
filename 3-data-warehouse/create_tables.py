@@ -26,7 +26,7 @@ def main():
     Parse AWS config and creating necessary tables for analysis. 
     """
     config = configparser.ConfigParser()
-    config.read('dwh.cfg')
+    config.read('dwh_local.cfg')
     conn = psycopg2.connect("host={} dbname={} user={} password={} "
                             "port={}".format(*config['CLUSTER'].values()))
     cur = conn.cursor()

@@ -46,6 +46,7 @@ if __name__ == "__main__":
                            PolicyArn="arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess")
     # get role arn
     role_arn = iam.get_role(RoleName=args.dwh_s3_iam_name)['Role']['Arn']
+    print("role_arn: ", role_arn)
 
     # creating redshift cluster
     redshift = boto3.client("redshift")
