@@ -2,7 +2,7 @@ import configparser
 
 # CONFIG
 config = configparser.ConfigParser()
-config.read('dwh_local.cfg')
+config.read('dwh.cfg')
 DWH_ROLE_ARN = config.get("IAM_ROLE", "ARN")
 LOG_DATA = config.get("S3", "LOG_DATA")
 SONG_DATA = config.get("S3", "SONG_DATA")

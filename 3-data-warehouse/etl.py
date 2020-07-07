@@ -26,7 +26,7 @@ def main():
     Reads AWS config file, creates desired tables and inserts data.
     """
     config = configparser.ConfigParser()
-    config.read('dwh_local.cfg')
+    config.read('dwh.cfg')
 
     conn = psycopg2.connect("host={} dbname={} user={} password={} "
                             "port={}".format(*config['CLUSTER'].values()))
