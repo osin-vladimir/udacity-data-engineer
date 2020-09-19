@@ -10,7 +10,7 @@ class LoadDimensionOperator(BaseOperator):
     def __init__(self,
                  redshift_conn_id="",
                  sql_query = "",
-                 truncate = False,
+                 mode = "",
                  table_name = "",
                  *args, **kwargs):
 
@@ -18,7 +18,7 @@ class LoadDimensionOperator(BaseOperator):
         self.redshift_conn_id = redshift_conn_id
         self.sql_query = sql_query
         self.table_name = table_name
-        self.truncate = truncate
+        self.mode = mode
 
     def execute(self, context):
         """
@@ -28,9 +28,16 @@ class LoadDimensionOperator(BaseOperator):
 
         redshift_hook = PostgresHook(postgres_conn_id = self.redshift_conn_id)
 
-        if self.truncate:
+        if self.mode == "truncate-insert":
+            self.log.info(f'Truncating current table {self.table_name} ...')
             redshift_hook.run(f"truncate table {self.table_name}")
+            self.log.info(f'Current table empty. ')
 
-        self.log.info(f'Loading data into dimensional table {self.table_name} ...')
-        redshift_hook.run(self.sql_query)
-        self.log.info(f'Loading data into dimensional table {self.table_name} complete')
+            self.log.info(f'Loading data into dimensional table {self.table_name} ...')
+            redshift_hook.run(self.sql_query)
+            self.log.info(f'Loading data into dimensional table {self.table_name} complete')
+
+        elif self.mode == "append":
+            self.log.info(f'Appending data into dimensional table {self.table_name} ...')
+            redshift_hook.run(self.sql_query)
+            self.log.info(f'Appending data into dimensional table {self.table_name} complete')

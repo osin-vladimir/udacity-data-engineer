@@ -57,35 +57,35 @@ with DAG("s3_to_redshift",
         task_id='Load_songplays_fact_table',
         sql_query = SqlQueries.songplay_table_insert,
         table_name = 'songplays',
-        truncate=False # better to append to fact tables
+        mode="append" # better to append to fact tables
     )
 
     load_user_dimension_table = LoadDimensionOperator(
         task_id='Load_user_dim_table',
         sql_query = SqlQueries.user_table_insert,
         table_name = 'users',
-        truncate=True
+        mode="truncate-insert"
     )
 
     load_song_dimension_table = LoadDimensionOperator(
         task_id='Load_song_dim_table',
         sql_query = SqlQueries.song_table_insert,
         table_name = 'songs',
-        truncate=True
+        mode="truncate-insert"
     )
 
     load_artist_dimension_table = LoadDimensionOperator(
         task_id='Load_artist_dim_table',
         sql_query = SqlQueries.artist_table_insert,
         table_name = 'artists',
-        truncate=True
+        mode="truncate-insert"
     )
 
     load_time_dimension_table = LoadDimensionOperator(
         task_id='Load_time_dim_table',
         sql_query = SqlQueries.time_table_insert,
         table_name = 'time',
-        truncate=True
+        mode="truncate-insert"
     )
 
     run_quality_checks = DataQualityOperator(
