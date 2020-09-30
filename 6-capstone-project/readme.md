@@ -1,22 +1,37 @@
-# Capstone Project - Global Surface Summary Dashboard
+# Global Surface Summary Dashboard
+
+### Data Engineering Capstone Project
 
 ![](img/dataset-cover.jpg)
 
-## 1. Scope and data
 
-The goal of this project is to build an analytics dashboard for surface summary data
-provided by NOAA. The dashboard should be easily accessible for multiple users
-and allows to analyse temporal dynamics of the climate data.
+#### Project Summary
 
-The dataset used in
-this project available at [Kaggle](https://www.kaggle.com/noaa/noaa-global-surface-summary-of-the-day).
+The goal of this project is to build an analytics dashboard for surface summary
+data from climate stations worldwide. The dashboard should be easily accessible
+for multiple users and allows to analyse temporal dynamics of the climate data.
 
 
-## 2. Data exploration and Assessment
+### 1. Scope and data
 
-The dataset contains surface summary data from 1929 until 2019 from over 9000
+#### Scope
+
+This project focused on building analysis of climate data parameters which located
+worldwide. The climate data is processed using ad-hoc ETL job, uploaded to the database and
+visualized in the dashboard application. The dataset used in this project available
+at [Kaggle](https://www.kaggle.com/noaa/noaa-global-surface-summary-of-the-day).
+
+The total solution is a containerized application using Docker, which consist of the following components:
+- Influx DB - optimized time-series database
+- Grafana - state-of-the-art tool for dashboarding of time-series data
+
+![](img/etl_schema.png)
+
+#### Describe Data
+
+The Kaggle dataset contains surface summary data from 1929 until 2019 from over 9000
 climate stations worldwide. The daily elements included in the dataset
-(as available from each station) are:
+(as available from each climate station) are:
 
 - Mean temperature
 - Mean dew point
@@ -33,6 +48,9 @@ climate stations worldwide. The daily elements included in the dataset
 
 **Note:** For this project we focus on the temperature data (mean, max, min).
 
+
+### 2. Data exploration and Assessment
+
 There are several prominent data quality issues in the dataset, which needs to
 be handled before processing.
 
@@ -46,15 +64,13 @@ To clean this data the following steps performed:
 - all stations that can't be linked to the country should be discarded
 - temperature data should be converted to proper units
 
-The more detailed process provided in the *notebooks/prepare_metadata.ipynb* and
+The more detailed process described in the *notebooks/prepare_metadata.ipynb* and
 *notebooks/dataflow-example.ipynb*.
 
-Below a summary of metadata derived from *data/isd-history.csv*
 
-![](img/metadata.jpg)
+### 3. Data model
 
-
-## 3. Data model
+#### Conceptual Data Model
 
 In this project, I am working with time-series data, which required some special
 treatment. To store this data efficiently it's required to use databases
@@ -66,12 +82,6 @@ it can provide:
 - 3.9x better data ingestion
 - 16.6x better compression
 - 16% better query performance
-
-**Note on users:** this database highly scalable and can allow an increase in
-users base by 100 people.
-
-**Note on data:** due to high compression rate of InfluxDB data can be
-increased 100 times.
 
 To design the data model, we need to address the definition of key concepts
 such as fields, tags and measurements.
@@ -90,16 +100,19 @@ are performant.
 the data stored in the associated fields. Measurements are strings.
 
 Taking into account above-mentioned concepts our data will be organized into
-InfluxDB database with the following measurement:
+InfluxDB database with into the following measurement:
 
 - measurement: temperature
     - fields: mean, max, min temperatures
     - tags: station id, country, station name
 
+#### Mapping Out Data Pipelines
+
 The necessary steps to pipeline data into the provided model are the following:
 
 ![](img/data-flow.png)
 
+- extract zipped Kaggle Dataset
 - read and clean .op files which contains measurement for a particular year
 - transform .op files into a pandas data frame
 - upload pandas data frame into influxdb measurement using influxdb python client library
@@ -108,12 +121,31 @@ The necessary steps to pipeline data into the provided model are the following:
 following [this guide](https://grafana.com/docs/grafana/latest/features/datasources/influxdb/).
 
 **Note:** All components were executed in Docker environment, which can be recreated
-using docker compose file in *infrastrcuture/infrastructure.yaml*
+using docker-compose file in *infrastructure/infrastructure.yaml*
 
-## 4. Resulting Grafana dashboard
+
+### 4. Running ETL pipeline
+
+- Setup the environment using docker-compose:
+
+```
+docker-compose -f infrastructure/infrastrucuture.yaml up -d
+```
+
+- Follow the steps in *notebooks/dataflow-example* to process .op files
+
+- Data dictionary example provided in *data/data_dict.json*
+(explanation for data dictionary provided above in Data model section)
+
+**Note:** Dataset at Kaggle currently updated on the year basis (last measurements are from 2019),
+however, it will be better to update it at least daily which allows having more
+up to date data and ability to react on climate changes.
+
+
+### Resulting Grafana dashboard
 
 Please find an example of a developed dashboard below. I combined several years
-data from several cities into set of panels into single dashboard.
+data from several cities into a set of panels into a single dashboard.
 
 ![](img/dashboard-example.jpg)
 
@@ -127,11 +159,10 @@ How you would approach the problem differently under the following scenarios?
    (e.g. **Airflow**), that allows to schedule pipelines at a convenient time.
 
 2. - If the data was increased by 100x?
-   - Current installation of InfluxDB allows to handle 100x increase, however
-   with more expansion it's preferably to move into cloud-managed version,
+   - Current installation of InfluxDB allows handling 100x data increase, however
+   with more expansion, it's preferably to move into cloud-managed version,
    with [elastic scalability support](https://www.influxdata.com/products/influxdb-cloud/).
 
 3. - If the database needed to be accessed by 100+ people?
-   - In case of growing user base it's possible to increase the amount of Grafana
-   instances and [put a load balancer in front](https://grafana.com/docs/grafana/latest/administration/set-up-for-high-availability/).
+   - In case of growing user base it's possible to increase the amount of Grafana instances and [put a load balancer in front](https://grafana.com/docs/grafana/latest/administration/set-up-for-high-availability/).
    Access to the database will not be a problem for 100 users, due to speed that Influx DB can provide.

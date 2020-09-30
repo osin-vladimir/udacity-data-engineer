@@ -1,0 +1,14 @@
+{
+    "measurement": "temperature",
+    "time": "1955-03-05T00:00:00Z",
+    "tags": {
+        "ctry": "RS",
+        "station_name": "MOSCALVO",
+        "stid": "320140nan"
+    },
+    "fields": {
+        "mean": -6.38,
+        "max": -3.88,
+        "min": -20
+    }
+}
